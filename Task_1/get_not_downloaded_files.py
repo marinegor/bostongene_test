@@ -67,7 +67,8 @@ def main(args: List[str]) -> None:
     for logname in args.mask:
         with suppress(Exception):
             folder_name = os.path.split(os.path.dirname(os.path.realpath(logname)))[1]
-            print(folder_name)
+            if os.path.exists(logname):
+                print(folder_name)
             filenames = missing_files_in_log(logname)
             for filename, downloaded in filenames.items():
                 if not downloaded:

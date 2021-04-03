@@ -27,7 +27,7 @@ optional arguments:
   --strict    Whether to fail on file processing errors
 ```
 
-Пример запуска:
+## Пример запуска:
 
 ```bash
 ./get_not_downloaded_files.py data_1/report_1.txt
@@ -42,7 +42,7 @@ SRR5633035
 ...
 ```
 
-Простая проверка на разумность выдаваемого результата:
+## Простая проверка на разумность выдаваемого результата:
 
 ```bash
 grep 'not complete' data_?/report_?.txt | wc -l
@@ -52,3 +52,25 @@ grep 'not complete' data_?/report_?.txt | wc -l
 ```
 
 Т.е. строчек с `not complete` чуть больше, чем файлов, найденных скриптом -- что логично, ведь это значило бы что какие-то файлы не скачались несколько раз.
+
+## Ключ `--strict`
+Полезен при желании сделать проверку по итерируемым маскам файлов в `bash`, не заботясь при этом о том, что некоторые файлы могут не существовать:
+
+```bash
+## if you don't want to care that some files don't exist
+./generate_not_downloaded_files.py data_{1..5}/report_{1..5}.txt
+# normal 355-lined output
+
+## if you want your script to fail in that case
+./generate_not_downloaded_files.py data_{1..5}/report_{1..5}.txt
+
+# Traceback (most recent call last):
+#   File "./get_not_downloaded_files.py", line 79, in <module>
+#     main(sys.argv[1:])
+#   File "./get_not_downloaded_files.py", line 72, in main
+#     filenames = missing_files_in_log(logname)
+#   File "./get_not_downloaded_files.py", line 22, in missing_files_in_log
+#     with open(logname, "r") as fin:
+# FileNotFoundError: [Errno 2] No such file or directory: 'data_1/report_2.txt'
+```
+
