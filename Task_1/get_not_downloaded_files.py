@@ -11,7 +11,7 @@ from typing import Tuple, Dict, List
 def status_and_filename(line: str) -> Tuple[str, str]:
     if "Download complete" in line:
         completed = 1
-    else:  # r'Download \w complete' matches line:
+    else:  # r'Download \w not complete' matches line:
         completed = 0
     filename = os.path.split(line)[1]
 
